@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj" />
+    <PackageReference Include="CloudinaryDotNet" Version="1.18.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Cloudinaries\" />
+    <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
 
 </Project>
