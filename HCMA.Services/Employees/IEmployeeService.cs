@@ -9,13 +9,14 @@ namespace HCMA.Services.Employees
 {
     public interface IEmployeeService
     {
-        Task CreateAsync(string FirstName,string LastName,string Phone,string Email,DateTime startDate,string Image,decimal salary,string image,string username,string password,int departmentId,int roleId );
+        Task CreateAsync(string FirstName,string LastName,string Phone,string Email,DateTime startDate,string Image,decimal salary,string username,string password,int departmentId,int roleId );
 
-        string EditAsync(int id);
+        int EditAsync(EmployeeServiceModel employeeServiceModel,int id);
 
-        Task<TModel> GetByIdAsync<TModel>(EmployeeServiceModel employeeServiceModel,int id);
+        Task<TModel> GetByIdAsync<TModel>(int id);
         Task DeleteAsync(int id);
         Task<IEnumerable<TModel>> GetAllAsync<TModel>(string search = null);
-
+        int Login(string username, string password);
+        bool Logout();
     }
 }

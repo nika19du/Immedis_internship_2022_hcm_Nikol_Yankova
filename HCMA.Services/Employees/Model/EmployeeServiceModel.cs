@@ -18,5 +18,8 @@ namespace HCMA.Services.Employees.Model
         public string Password { get; set; }
         public string Image { get; set; }
         public int DepartmentId { get; set; }
+        public int RoleId { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string Address { get; set; }
     }
 }

@@ -1,0 +1,34 @@
+﻿@model HCMA.InputModels.Employees.LoginEmployeeViewModels
+@{
+    ViewData["Title"] = "Login";
+}
+<br />
+<br />
+<h3 style="color: #69d2e7;">Login</h3>
+
+<div> 
+    <br />
+    <div class="col-md-4" style="color: #69d2e7;">
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @Html.ValidationMessageFor(m => m.Username)
+                <label style="color: #69d2e7;font-size:20px;" asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label style="color: #69d2e7;font-size:20px;" asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-outline-primary">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

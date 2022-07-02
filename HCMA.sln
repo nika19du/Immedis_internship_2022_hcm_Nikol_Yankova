@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "App\App.csproj", "{6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCMA.Services", "HCMA.Services\HCMA.Services.csproj", "{280F722C-E1AB-438C-B7BB-8573EE612B7E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCMA.InputModels", "HCMA.InputModels\HCMA.InputModels.csproj", "{A6F70AD5-7215-45E2-B98E-8A44B04D43EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCMA.ViewModels", "HCMA.ViewModels\HCMA.ViewModels.csproj", "{EFFCEAEE-D032-40AA-B250-8CE0766CF1B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{280F722C-E1AB-438C-B7BB-8573EE612B7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{280F722C-E1AB-438C-B7BB-8573EE612B7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{280F722C-E1AB-438C-B7BB-8573EE612B7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6F70AD5-7215-45E2-B98E-8A44B04D43EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6F70AD5-7215-45E2-B98E-8A44B04D43EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6F70AD5-7215-45E2-B98E-8A44B04D43EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6F70AD5-7215-45E2-B98E-8A44B04D43EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFFCEAEE-D032-40AA-B250-8CE0766CF1B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFFCEAEE-D032-40AA-B250-8CE0766CF1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFFCEAEE-D032-40AA-B250-8CE0766CF1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFFCEAEE-D032-40AA-B250-8CE0766CF1B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

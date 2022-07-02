@@ -1,0 +1,98 @@
+﻿@model HCMA.ViewModels.Employees.EmployeesAllViewModel
+@using HCMA.Services
+@{
+    ViewData["Title"] = "All";
+}
+@using X.PagedList.Mvc.Core;
+
+<h1>All Employees</h1>
+<div>
+    <a asp-action="Create" style="background-color:#0676FD;color:white;border:none;font-size:20px;padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;">
+        New
+    </a>
+    <br /><br />
+    <div class="tt-search">
+        <form class="search-wrapper"
+              asp-controller="Employees"
+              asp-action="All"
+              method="get">
+            <div class="search-form">
+                <input type="text" name="id"
+                       asp-for="Search"
+                       class="tt-search__input"
+                       placeholder="Search employee" />
+                <button runat="server" asp-for="Search" id="btnSubmit" class="search-btn">
+                    <i class="fas fa-search fa-lg"></i>
+                </button>
+            </div>
+            <br />
+        </form>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th scope="col"><a asp-action="All" asp-route-sortOrder="@ViewData["NameOrder"]">UserName</a></th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Position</th>
+            <th scope="col">Role</th>
+            @if (AccountService.Username == "admin")
+            {
+                <th scope="col">Action</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var e in Model.Employees)
+        {
+            <tr>
+                <td>
+                    <img src="@e.Image" style="height:80px" />
+                </td>
+                <td>@e.Username</td>
+                <td>@e.FirstName</td>
+                <td>@e.LastName</td>
+                <td>@e.Email</td>
+                <td>@e.Department.Name</td>
+                <td>@e.Role.Name</td>
+                @if (AccountService.Username == "admin")
+                {
+                    <td type="button">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Action
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <a class="dropdown-item btn btn-info" asp-route-id="@e.Id" asp-action="Details" type="button">Details</a>
+                                <a class="dropdown-item btn btn-warning" asp-route-id="@e.Id" asp-action="Edit" type="button">Edit</a>
+                                <a class="dropdown-item btn btn-danger" asp-route-id="@e.Id" asp-action="Delete" type="button">Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                }
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+<br /> 
+@using X.PagedList;
+<div class="justify-content-center container-fluid align-items-center h-100 d-flex">
+    @Html.PagedListPager((IPagedList)Model.Employees, i => Url.Action("All", new { i }),
+        new X.PagedList.Web.Common.PagedListRenderOptions
+        {
+            DisplayLinkToIndividualPages = true,
+            DisplayPageCountAndCurrentLocation = false,
+            MaximumPageNumbersToDisplay = 10,
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" }
+        })
+</div>

@@ -1,5 +1,6 @@
 ﻿using App.Helper;
 using Data.Models;
+using HCMA.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -36,6 +37,12 @@ namespace App.Controllers
         }
         public IActionResult Create()
         {
+            if(AccountService.Role!="Admin")
+            {
+                ViewBag.ErrorTitle = "Only admin can add employee in system! ";
+                ViewBag.ErrorMessage = $"{AccountService.Username} can't access this page!";
+                return View("NotFoundPage");
+            }
             return View();
         }
         [HttpPost]
@@ -58,7 +65,13 @@ namespace App.Controllers
         } 
 
         public async Task<IActionResult> Edit(int id)
-        { 
+        {
+            if (AccountService.Role != "Admin")
+            {
+                ViewBag.ErrorTitle = "Only admin can add employee in system! ";
+                ViewBag.ErrorMessage = $"{AccountService.Username} can't access this page!";
+                return View("NotFoundPage");
+            }
             HttpResponseMessage res = await client.GetAsync($"api/roles/{id}");
             var result = res.Content.ReadAsStringAsync().Result;
             var d = JsonConvert.DeserializeObject<Role>(result);
@@ -85,6 +98,12 @@ namespace App.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
+            if (AccountService.Role != "Admin")
+            {
+                ViewBag.ErrorTitle = "Only admin can add employee in system! ";
+                ViewBag.ErrorMessage = $"{AccountService.Username} can't access this page!";
+                return View("NotFoundPage");
+            }
             var res = await client.DeleteAsync($"/api/roles/{id}");
             if (res.IsSuccessStatusCode)
             {
