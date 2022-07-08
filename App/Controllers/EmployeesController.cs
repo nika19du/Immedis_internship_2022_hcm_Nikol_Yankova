@@ -1,4 +1,6 @@
-﻿using Data;
+﻿using App.Models;
+using AutoMapper;
+using Data;
 using Data.Models;
 using HCMA.InputModels.Employees;
 using HCMA.Services;
@@ -19,22 +21,24 @@ namespace App.Controllers
 {
     public class EmployeesController : Controller
     {
-        public EmployeesController(IEmployeeService employeeService, Context context, ICloudinaryService cloudinaryService)
+        public EmployeesController(IEmployeeService employeeService, Context context, ICloudinaryService cloudinaryService,IMapper mapper)
         {
             this.employeeService = employeeService;
             this.context = context;
             this.cloudinaryService = cloudinaryService;
+            this.mapper = mapper;
         }
         private IEmployeeService employeeService;
         private readonly Context context;
         private ICloudinaryService cloudinaryService;
+        private readonly IMapper mapper;
         public IActionResult Index()
         {
             return View();
         }
         public IActionResult Create()
         {
-            if (AccountService.Username == "Admin")
+            if (AccountService.Role == "Admin")
             {
                 ViewData["Department"] = new SelectList(context.Departments, "Id", "Name");
                 ViewData["Role"] = new SelectList(context.Roles, "Id", "Name");
@@ -56,33 +60,65 @@ namespace App.Controllers
                 ViewData["Role"] = new SelectList(context.Roles, "Id", "Name", model.DepartmentId);
                 return this.View(model);
             }
+            if (context.Employees.Any(x => x.Username == model.Username))
+            {
+                ViewData["Department"] = new SelectList(context.Departments, "Id", "Name", model.DepartmentId);
+                ViewData["Role"] = new SelectList(context.Roles, "Id", "Name", model.DepartmentId);
+                ModelState.AddModelError(nameof(model.Username), "Someone already has that username. Try another?");
+                return this.View(model);
+            }
+            if(model.Password.Length < 6 && model.Password.Any(char.IsUpper)==false && model.Password.Any(char.IsSymbol)==false)
+            {
+                ViewData["Department"] = new SelectList(context.Departments, "Id", "Name", model.DepartmentId);
+                ViewData["Role"] = new SelectList(context.Roles, "Id", "Name", model.DepartmentId);
+                ModelState.AddModelError(nameof(model.Password), "Password must be more than 6 characters long, should contain at-least 1 Uppercase,1 Lowercase,1 Numeric and 1 special character.");
+                return this.View(model);
+            }
             string pictureUrl = await this.cloudinaryService.UploadPictureAsync(model.Image, model.Username);
-            await this.employeeService.CreateAsync(model.FirstName, model.LastName, model.Phone, model.Email, model.StartDate, pictureUrl, model.Salary, model.Username, model.Password, model.DepartmentId, model.RoleId);
+            await this.employeeService.CreateAsync(model.FirstName, model.LastName, model.Phone, model.Email,model.GenderType, model.StartDate, pictureUrl, model.Salary, model.Username, model.Password, model.DepartmentId, model.RoleId);
             return RedirectToAction(nameof(All));
         }
+
+
         [HttpGet]
         public async Task<IActionResult> All(int? i, string sortOrder, string? id = null)
-        {
-
+        { 
             IEnumerable<EmployeesInfoViewModel> employees = await this.employeeService.GetAllAsync<EmployeesInfoViewModel>(id);
+            var filters = new Filters(id);
+            ViewBag.Filters = filters;
+            var a = context.Departments.Select(arg => arg.Name).ToList();
+            ViewData["Positions"] = new SelectList(a);
+            var roles = context.Roles.Select(x => x.Name).ToList();
+            ViewData["Roles"] = new SelectList(roles); 
+            IQueryable<Employee> query = context.Employees.Include(x => x.Department).Include(x => x.Role);
+            if (filters.HasPosition)
+            {
+                query = query.Where(x => x.DepartmentId == int.Parse(filters.PositionId));
+            } 
+            ViewData["NameOrder"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    query=query.OrderByDescending(x => x.Username);// viewModel.Employees.OrderByDescending(x => x.Username);
+                    break;
+                default:
+                    query=query.OrderBy(x => x.Username);// viewModel.Employees.OrderByDescending(x => x.Username);
+                    // viewModel.Employees.OrderBy(x => x.Username);
+                    break;
+            }
             var viewModel = new EmployeesAllViewModel
             {
                 Employees = employees
             };
             IPagedList<EmployeesInfoViewModel> emps = viewModel.Employees.ToList().ToPagedList(i ?? 1, 6);
             viewModel.Employees = emps;
-            ViewData["NameOrder"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    viewModel.Employees.Select(x => x.Username.OrderByDescending(x => x));// viewModel.Employees.OrderByDescending(x => x.Username);
-                    break;
-                default:
-                    viewModel.Employees.Select(x => x.Username.OrderBy(x => x));// viewModel.Employees.OrderByDescending(x => x.Username);
-                    // viewModel.Employees.OrderBy(x => x.Username);
-                    break;
-            }
             return View(viewModel);
+        }
+        [HttpPost]
+        public IActionResult Filter(string[] filter)
+        {
+            string id = string.Join('-', filter);
+            return RedirectToAction("All", new { id = id });
         }
         public IActionResult Logout()
         {
@@ -109,7 +145,7 @@ namespace App.Controllers
                 else return RedirectToAction("Index", "Home");
             }
             catch
-            { 
+            {
                 return View("NotFoundPage");
             }
         }
@@ -123,7 +159,11 @@ namespace App.Controllers
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 Phone = employee.Phone,
-                Salary = employee.Salary
+                Salary = employee.Salary,
+                Department = context.Departments.Find(employee.DepartmentId),
+                DateOfBirth = employee.DateOfBirth,
+                Address = employee.Address,
+                StartDate = employee.StartDate
             };
             ViewData["Department"] = new SelectList(context.Departments, "Id", "Name");
             ViewData["Role"] = new SelectList(context.Roles, "Id", "Name");
@@ -180,7 +220,7 @@ namespace App.Controllers
                     Address = model.Address
                 };
                 employeeService.EditAsync(employeeServiceModel, employee.Id);
-                return this.RedirectToAction("All", "Employees", new { id = employee.Id });
+                return this.RedirectToAction("All", "Employees");
             }
             else return BadRequest();
         }

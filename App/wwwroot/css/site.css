@@ -6,7 +6,9 @@ a.navbar-brand {
   text-align: center;
   word-break: break-all;
 }
-
+.hideFilterSec {
+    display: none;
+}
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;
@@ -82,7 +84,6 @@ body {
     margin-inline-end: 0px;
     font-weight: bold;
 }
-
 table {
     border-collapse: collapse;
 }
@@ -119,7 +120,23 @@ tr:nth-child(even) {
     padding: 15px 32px;
     text-align: center;
 }
-
+.resume-user {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    font-size: 66px;
+    border-radius: 50px;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background-color: #e9e9e9;
+    color: #ff4f6c;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+    text-align: center;
+}
 .font-size38 {
     font-size: 38px;
 }
@@ -132,7 +149,7 @@ tr:nth-child(even) {
 .team-single-text .section-heading.half {
     margin-bottom: 20px
 }
-
+ 
 @media screen and (max-width: 1199px) {
     .team-single-text .section-heading h4,
     .section-heading h5 {
@@ -143,6 +160,7 @@ tr:nth-child(even) {
         margin-bottom: 15px
     }
 }
+
 
 @media screen and (max-width: 991px) {
     .team-single-text .section-heading h4,
@@ -162,6 +180,64 @@ tr:nth-child(even) {
     }
 }
 
+.card-counter {
+    box-shadow: 2px 2px 10px #DADADA;
+    margin: 5px;
+    padding: 20px 10px;
+    background-color: #fff;
+    height: 100px;
+    border-radius: 5px;
+    transition: .3s linear all;
+}
+
+    .card-counter:hover {
+        box-shadow: 4px 4px 20px #DADADA;
+        transition: .3s linear all;
+    }
+
+    .card-counter.primary {
+        background-color: #007bff;
+        color: #FFF;
+    }
+
+    .card-counter.danger {
+        background-color: #ef5350;
+        color: #FFF;
+    }
+
+    .card-counter.success {
+        background-color: #66bb6a;
+        color: #FFF;
+    }
+
+    .card-counter.info {
+        background-color: #26c6da;
+        color: #FFF;
+    }
+
+    .card-counter i {
+        font-size: 5em;
+        opacity: 0.2;
+    }
+
+    .card-counter .count-numbers {
+        position: absolute;
+        right: 35px;
+        top: 20px;
+        font-size: 32px;
+        display: block;
+    }
+
+    .card-counter .count-name {
+        position: absolute;
+        right: 35px;
+        top: 65px;
+        font-style: italic;
+        text-transform: capitalize;
+        opacity: 0.5;
+        display: block;
+        font-size: 18px;
+    }
 
 .team-single-icons ul li {
     display: inline-block;
@@ -361,4 +437,9 @@ a.text-lightred:hover {
 
 .bg-lightred {
     background-color: #ff5722
+}
+
+.dropdown-item i span {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
 }

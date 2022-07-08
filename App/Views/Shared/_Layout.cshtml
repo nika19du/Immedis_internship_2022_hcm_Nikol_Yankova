@@ -8,12 +8,16 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <script src="https://kit.fontawesome.com/2c17b0523e.js" crossorigin="anonymous"></script>
+
+    <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.4/themes/dot-luv/jquery-ui.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">App</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">💠</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -24,9 +28,9 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="/Employees/All">All Employees</a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/Employees/All">All Employees</a>
+                        </li>
                         @if (AccountService.UsrId == null)//if its not logged  do it
                         {
                             <ul style="position:absolute;top:0px;right:100px;margin:auto;padding:13px" class="navbar-nav">
@@ -38,7 +42,7 @@
                         else
                         {
                             @if (AccountService.Username == "admin" || AccountService.Role == "Supervisor")
-                            { 
+                            {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Departments</a>
                                     <div class="dropdown-menu">

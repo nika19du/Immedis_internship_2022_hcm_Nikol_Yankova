@@ -1,4 +1,5 @@
 ﻿using App.Models;
+using Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,16 +11,20 @@ using System.Threading.Tasks;
 namespace App.Controllers
 {
     public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+    { 
+        public HomeController(ILogger<HomeController> logger,Context ctx)
         {
             _logger = logger;
-        }
-
+            this.context = ctx;
+            
+        } 
+        private readonly ILogger<HomeController> _logger;
+        private readonly Context context;
         public IActionResult Index()
-        {
+        { 
+            ViewData["EmployeesCount"] = context.Employees.Count();
+            ViewData["DepartmentsCount"] = context.Departments.Count();
+            ViewData["RolesCount"] = context.Roles.Count();
             return View();
         }
 

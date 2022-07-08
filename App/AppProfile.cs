@@ -15,7 +15,7 @@ namespace App
             #region Employees
             this.CreateMap<Employee, EmployeesInfoViewModel>();
             this.CreateMap<EmployeesInfoViewModel, EmployeesAllViewModel>().ReverseMap();
-            this.CreateMap<Employee, Employee>();
+            this.CreateMap<Employee, Employee>(); 
             #endregion
         }
     }

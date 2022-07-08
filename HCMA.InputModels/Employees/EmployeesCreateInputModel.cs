@@ -27,6 +27,7 @@ namespace HCMA.InputModels.Employees
         public DateTime StartDate { get; set; }
         [Required]
         public decimal Salary { get; set; }
+        public Gender GenderType { get; set; }
         [Required] 
         public string Username { get; set; }
         [Required]

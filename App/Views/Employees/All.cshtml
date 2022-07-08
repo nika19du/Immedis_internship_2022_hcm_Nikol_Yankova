@@ -6,33 +6,69 @@
 @using X.PagedList.Mvc.Core;
 
 <h1>All Employees</h1>
-<div>
-    <a asp-action="Create" style="background-color:#0676FD;color:white;border:none;font-size:20px;padding: 10px 25px;
+<div class="row justify-content-md-center">
+    <form asp-action="Filter">
+        <div class="row hideFilterSec" id="filterSection" style="display:none;">
+            <div class="col-md-14">
+                <div class="form-group">
+                    <label>Position</label>
+                    <select name="filter" class="form-control" asp-items="ViewBag.Positions"></select>
+                </div>
+            </div>
+            <div class="col-md-14">
+                <div class="form-group">
+                    <label>Role</label>
+                    <select name="filter" class="form-control" asp-items="ViewBag.Roles"></select>
+                </div>
+            </div>
+            <div class="col-md-12 mt-12 pt-2">
+                <button type="submit" class="btn btn-primary" value="Filter">Filter</button>
+                <a asp-action="All" asp-route-id="" class="btn btn-secondary">Clear</a>
+            </div>
+        </div>
+    </form>
+    <div class="col-md-12">
+        <a asp-action="Create" style="background-color:#0676FD;color:white;border:none;font-size:20px;padding: 10px 25px;
   text-align: center;
   text-decoration: none;
   display: inline-block;">
-        New
-    </a>
-    <br /><br />
-    <div class="tt-search">
-        <form class="search-wrapper"
-              asp-controller="Employees"
-              asp-action="All"
-              method="get">
-            <div class="search-form">
-                <input type="text" name="id"
-                       asp-for="Search"
-                       class="tt-search__input"
-                       placeholder="Search employee" />
-                <button runat="server" asp-for="Search" id="btnSubmit" class="search-btn">
-                    <i class="fas fa-search fa-lg"></i>
-                </button>
-            </div>
-            <br />
-        </form>
+            New
+        </a>
+        <br />
+        <br />
+        <div class="tt-search">
+            <form class="search-wrapper"
+                  asp-controller="Employees"
+                  asp-action="All"
+                  method="get">
+                <div class="search-form">
+                    <input type="text" name="id"
+                           asp-for="Search"
+                           class="tt-search__input"
+                           placeholder="Search employee" />
+                    <button runat="server" asp-for="Search" id="btnSubmit" class="search-btn">
+                        <i class="fas fa-search fa-lg"></i>
+                    </button>
+                </div>
+                <br />
+            </form>
+        </div>
+        <div id="filterBtn">
+            <i class="fa-solid fa-filter"></i>
+        </div>
     </div>
 </div>
-
+<script type="text/javascript">
+    let el = document.getElementById('filterBtn');
+    var filterSec = document.getElementById('filterSection');
+    el.addEventListener('click', function () { 
+        if (filterSec.style.display == 'none') {
+            filterSec.style.display = 'block';
+        } else {
+            filterSec.style.display = 'none';
+        } 
+    });
+</script>
 <table class="table">
     <thead>
         <tr>
@@ -43,7 +79,7 @@
             <th scope="col">Email</th>
             <th scope="col">Position</th>
             <th scope="col">Role</th>
-            @if (AccountService.Username == "admin")
+            @if (AccountService.Role == "Admin")
             {
                 <th scope="col">Action</th>
             }
@@ -61,8 +97,21 @@
                 <td>@e.LastName</td>
                 <td>@e.Email</td>
                 <td>@e.Department.Name</td>
-                <td>@e.Role.Name</td>
-                @if (AccountService.Username == "admin")
+                @if (@e.Role.Name == "Admin")
+                {
+                    <td><span class="badge-danger">@e.Role.Name</span></td>
+
+                }
+                else if (e.Role.Name == "Supervisor")
+                {
+                    <td><span class="badge-warning">@e.Role.Name</span></td>
+                }
+                else
+                {
+                    <td><span class="badge-info">@e.Role.Name</span></td>
+                }
+
+                @if (AccountService.Role == "Admin")
                 {
                     <td type="button">
                         <div class="dropdown">
@@ -70,9 +119,41 @@
                                 Action
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <a class="dropdown-item btn btn-info" asp-route-id="@e.Id" asp-action="Details" type="button">Details</a>
-                                <a class="dropdown-item btn btn-warning" asp-route-id="@e.Id" asp-action="Edit" type="button">Edit</a>
-                                <a class="dropdown-item btn btn-danger" asp-route-id="@e.Id" asp-action="Delete" type="button">Delete</a>
+                                <a class="dropdown-item btn btn-info" asp-route-id="@e.Id" asp-action="Details" type="button"><i class="fa-solid fa-eye"><span> Details</span></i></a>
+                                <a class="dropdown-item btn btn-warning" asp-route-id="@e.Id" asp-action="Edit" type="button"><i class="fas fa-edit"><span> Edit</span></i></a>
+                                <button type="button" class="dropdown-item btn btn-danger btn-block" onclick="fnConfirm();" runat="server" id="lbDelete"
+                                        data-url="@Url.Action($"Delete/{e.Id}")">
+                                    <i class="fas fa-trash-alt" onclick="fnConfirm();"><span> Delete</span></i>
+                                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+                                    <script type="text/javascript">
+                                                    function fnConfirm()
+                                                    {
+                                                        Swal.fire({
+                                                            title: 'Are you sure?',
+                                                            text: "You won't be able to revert this!",
+                                                            icon: 'warning',
+                                                            timer:6000,
+                                                            showCancelButton: true,
+                                                            confirmButtonColor: '#3085d6',
+                                                            cancelButtonColor: '#d33',
+                                                            confirmButtonText: 'Yes, delete it!'
+                                                        }).then((result) => {
+                                                            if (result.isConfirmed) {
+                                                                Swal.fire(
+                                                                    'Deleted!',
+                                                                    'Your file has been deleted.',
+                                                                    'success')
+                                                               var url = '@Url.Action($"Delete","Employees", new { id = e.Id })';
+                                                                window.location.href = url;
+                                                            }
+                                                            else {
+                                                                swal.close();
+                                                                swal("Cancelled", "Your imaginary file is safe :)", "error");
+                                                            }
+                                                        })
+                                                    }
+                                    </script>
+                                </button>
                             </div>
                         </div>
                     </td>
@@ -83,7 +164,7 @@
     </tbody>
 </table>
 
-<br /> 
+<br />
 @using X.PagedList;
 <div class="justify-content-center container-fluid align-items-center h-100 d-flex">
     @Html.PagedListPager((IPagedList)Model.Employees, i => Url.Action("All", new { i }),

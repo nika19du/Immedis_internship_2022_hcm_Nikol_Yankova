@@ -21,7 +21,7 @@ namespace HCMA.Services.Employees
         }
         private readonly Context context;
         private readonly IMapper mapper;
-        public async Task CreateAsync(string firstName, string lastName, string phone, string email, DateTime startDate, string image, decimal salary,
+        public async Task CreateAsync(string firstName, string lastName, string phone, string email,Gender gender, DateTime startDate, string image, decimal salary,
             string username, string password, int departmentId, int roleId)
         {
             var department = await this.context.Departments.FirstOrDefaultAsync(x => x.Id == departmentId);
@@ -33,6 +33,7 @@ namespace HCMA.Services.Employees
                 LastName = lastName,
                 Phone = phone,
                 Email = email,
+                Gender=gender,
                 StartDate = startDate,
                 Salary = salary,
                 Username = username,
@@ -41,7 +42,7 @@ namespace HCMA.Services.Employees
                 Department = department,
                 DepartmentId = department.Id,
                 Role = role,
-                RoleId = role.Id,
+                RoleId = role.Id
             };
             context.Employees.Add(employee);
             await context.SaveChangesAsync();
@@ -76,11 +77,16 @@ namespace HCMA.Services.Employees
 
         public async Task<IEnumerable<TModel>> GetAllAsync<TModel>(string search = null)
         {
-            var queryable=this.context.Employees.AsNoTracking(); 
-            if(!String.IsNullOrWhiteSpace(search))
+            var queryable=this.context.Employees.AsNoTracking();
+            var filterString = search ?? "all-all";
+            string[] filters = filterString.Split('-');
+            var position = filters[0];
+            var role = filters[1];
+            if (!String.IsNullOrWhiteSpace(search))
             {
                 queryable = queryable.Where(x => x.Username.Contains(search) ||
-                x.FirstName.Contains(search) || x.LastName.Contains(search));
+                x.FirstName.Contains(search) || x.LastName.Contains(search) ||( x.Department.Name==position && x.Role.Name==role));
+
             }
             var employees = await queryable.ProjectTo<TModel>(this.mapper.ConfigurationProvider).ToListAsync();
             return employees;
