@@ -69,6 +69,7 @@ namespace HCMA.Services.Employees
             e.DateOfBirth = employeeServiceModel.DateOfBirth;
             e.DepartmentId = employeeServiceModel.DepartmentId;
             e.RoleId = employeeServiceModel.RoleId;
+            e.Gender = employeeServiceModel.GenderType;
             context.Employees.Update(e);
             context.SaveChanges();
 
@@ -79,14 +80,19 @@ namespace HCMA.Services.Employees
         {
             var queryable=this.context.Employees.AsNoTracking();
             var filterString = search ?? "all-all";
-            string[] filters = filterString.Split('-');
-            var position = filters[0];
-            var role = filters[1];
+            string[] filters=null;
+            string position=string.Empty;
+            string role = string.Empty;
+            if(filterString.Contains('-'))
+            {
+                 filters = filterString.Split('-');
+                 position = filters[0];
+                 role = filters[1]; 
+            }
             if (!String.IsNullOrWhiteSpace(search))
             {
                 queryable = queryable.Where(x => x.Username.Contains(search) ||
                 x.FirstName.Contains(search) || x.LastName.Contains(search) ||( x.Department.Name==position && x.Role.Name==role));
-
             }
             var employees = await queryable.ProjectTo<TModel>(this.mapper.ConfigurationProvider).ToListAsync();
             return employees;

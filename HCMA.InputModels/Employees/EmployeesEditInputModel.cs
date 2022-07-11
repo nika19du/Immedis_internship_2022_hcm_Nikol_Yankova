@@ -34,8 +34,10 @@ namespace HCMA.InputModels.Employees
         public int RoleId { get; set; }
         public Role Role { get; set; } 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)] 
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Date of Birth")] 
         public DateTime? DateOfBirth { get; set; }
         public string Address { get; set; }
+        public Gender GenderType { get; set; } 
     }
 }

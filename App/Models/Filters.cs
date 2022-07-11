@@ -10,17 +10,18 @@ namespace App.Models
         public Filters(string filterstring)
         {
             this.FilterString = filterstring ?? "all-all";
-            string[] filters = this.FilterString.Split('-');
-            PositionId =filters[0];
-            RoleId=filters[1];
+            if(FilterString.Contains('-'))
+            {
+                string[] filters = this.FilterString.Split('-');
+                PositionId =filters[0];
+                RoleId=filters[1];
+            }
         }
         public string FilterString { get; set; }
 
         public string PositionId { get; set; }
         public string RoleId { get; set; }
 
-        public bool HasPosition => PositionId.ToLower() != "all";
-       // public bool HasRole => RoleId.ToLower() != "all";
-
+        public bool HasPosition => PositionId.ToLower() != "all"; 
     }
 }

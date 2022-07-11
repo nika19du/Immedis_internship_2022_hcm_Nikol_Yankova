@@ -74,36 +74,44 @@ namespace App.Controllers
                 ModelState.AddModelError(nameof(model.Password), "Password must be more than 6 characters long, should contain at-least 1 Uppercase,1 Lowercase,1 Numeric and 1 special character.");
                 return this.View(model);
             }
+            if (model.Salary < 800)
+            {
+                ViewData["Department"] = new SelectList(context.Departments, "Id", "Name", model.DepartmentId);
+                ViewData["Role"] = new SelectList(context.Roles, "Id", "Name", model.DepartmentId);
+                ModelState.AddModelError(nameof(model.Salary), "Salary can't be less than 800lv.");
+                return this.View(model);
+            }
             string pictureUrl = await this.cloudinaryService.UploadPictureAsync(model.Image, model.Username);
             await this.employeeService.CreateAsync(model.FirstName, model.LastName, model.Phone, model.Email,model.GenderType, model.StartDate, pictureUrl, model.Salary, model.Username, model.Password, model.DepartmentId, model.RoleId);
             return RedirectToAction(nameof(All));
         }
-
-
+         
         [HttpGet]
         public async Task<IActionResult> All(int? i, string sortOrder, string? id = null)
         { 
             IEnumerable<EmployeesInfoViewModel> employees = await this.employeeService.GetAllAsync<EmployeesInfoViewModel>(id);
-            var filters = new Filters(id);
-            ViewBag.Filters = filters;
-            var a = context.Departments.Select(arg => arg.Name).ToList();
-            ViewData["Positions"] = new SelectList(a);
-            var roles = context.Roles.Select(x => x.Name).ToList();
-            ViewData["Roles"] = new SelectList(roles); 
-            IQueryable<Employee> query = context.Employees.Include(x => x.Department).Include(x => x.Role);
-            if (filters.HasPosition)
-            {
-                query = query.Where(x => x.DepartmentId == int.Parse(filters.PositionId));
-            } 
+           
+                var filters = new Filters(id);
+                ViewBag.Filters = filters;
+                var a = context.Departments.Select(arg => arg.Name).ToList();
+                ViewData["Positions"] = new SelectList(a);
+                var roles = context.Roles.Select(x => x.Name).ToList();
+                ViewData["Roles"] = new SelectList(roles); 
+
+       
+            //IQueryable<Employee> query = context.Employees.Include(x => x.Department).Include(x => x.Role);
+            //if (filters.HasPosition)
+            //{
+            //    query = query.Where(x => x.DepartmentId == int.Parse(filters.PositionId));
+            //} 
             ViewData["NameOrder"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             switch (sortOrder)
             {
                 case "name_desc":
-                    query=query.OrderByDescending(x => x.Username);// viewModel.Employees.OrderByDescending(x => x.Username);
+                    employees = employees.OrderByDescending(x => x.Username).ToList();
                     break;
                 default:
-                    query=query.OrderBy(x => x.Username);// viewModel.Employees.OrderByDescending(x => x.Username);
-                    // viewModel.Employees.OrderBy(x => x.Username);
+                    employees = employees.OrderBy(x => x.Username).ToList();
                     break;
             }
             var viewModel = new EmployeesAllViewModel
@@ -198,7 +206,8 @@ namespace App.Controllers
                     Password = model.Password,
                     Phone = model.Phone,
                     DateOfBirth = model.DateOfBirth,
-                    Address = model.Address
+                    Address = model.Address,
+                    GenderType=model.GenderType
                 };
                 employeeService.EditAsync(employeeServiceModel, model.Id);
                 return this.RedirectToAction("All", "Employees");
@@ -217,7 +226,8 @@ namespace App.Controllers
                     Password = model.Password,
                     Phone = model.Phone,
                     DateOfBirth = model.DateOfBirth,
-                    Address = model.Address
+                    Address = model.Address,
+                    GenderType=model.GenderType
                 };
                 employeeService.EditAsync(employeeServiceModel, employee.Id);
                 return this.RedirectToAction("All", "Employees");

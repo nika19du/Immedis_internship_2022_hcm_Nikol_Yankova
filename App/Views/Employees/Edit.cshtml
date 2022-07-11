@@ -1,4 +1,5 @@
 ﻿@model HCMA.InputModels.Employees.EmployeesEditInputModel
+@using Data.Models
 
 @{
     ViewData["Title"] = "Edit";
@@ -108,10 +109,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="form-group">
-                                                        <label asp-for="Username">Username</label>
-                                                        <input asp-for="Username" class="form-control" type="text">
-                                                        <span asp-validation-for="Username" class="text-danger"></span>
+                                                    <div class="form-group app-label">
+                                                        <label for="General" class="app-label">Gender</label>
+                                                        <div class="form-button">
+                                                            <select asp-for="GenderType" asp-items="Html.GetEnumSelectList<Gender>()" class="form-control">
+                                                                <option selected="selected" value="">Please select</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -150,7 +154,17 @@
                                         </div>
                                     </div>
                                     <div class="row">
+
                                         <div class="col-12 col-sm-6 mb-3">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label asp-for="Username">Username</label>
+                                                        <input asp-for="Username" class="form-control" type="text">
+                                                        <span asp-validation-for="Username" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="mb-2"><b>Change Password</b></div>
                                             <div class="row">
                                                 <div class="col">
@@ -176,8 +190,8 @@
                                                 <div class="col">
                                                     <div class="custom-controls-stacked mt-2">
                                                         <div class="custom-control">
-                                                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                                                                 <label asp-for="DateOfBirth" class="control-label"></label>
+                                                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                                                                 <input id="ReleaseDateId" type="text"
                                                                        asp-for="DateOfBirth"
                                                                        class="form-control datetimepicker-input"
@@ -197,12 +211,12 @@
                                                             <select asp-for="RoleId" class="form-control" asp-items="ViewBag.Role"></select>
                                                             <span asp-validation-for="RoleId" class="text-danger"></span>
                                                         </div>
-                                                         
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row pl-3">
                                             <div class="col d-flex justify-content-end">
                                                 <button class="btn btn-primary" value="Save" type="submit">Save Changes</button>
                                             </div>
@@ -216,9 +230,9 @@
             </div>
         </div>
     </div>
-<div>
-    <a asp-action="All">Back to List</a>
-</div>
+    <div>
+        <a asp-action="All">Back to List</a>
+    </div>
 </div>
 
 @section Scripts {

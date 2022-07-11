@@ -1,4 +1,5 @@
 ﻿@using HCMA.Services
+@using Data 
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -19,46 +20,35 @@ else
     <br />
     <br />
 
-    @if (AccountService.Username == "admin")
+    @if (AccountService.Role == "Admin" || AccountService.Role=="Supervisor")
     {
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1 class="display-4">Welcome Administrator - @AccountService.Username</h1>
             </div>
-        </div> 
-                <div class="row">
-                    <a class="col-md-3 pointer-event" asp-controller="Employees" asp-action="All">
-                        <div class="card-counter danger">
-                            <i class="fa fa-user"></i>
-                            <span class="count-numbers">@ViewData["EmployeesCount"]</span>
-                            <span class="count-name">Employees</span>
-                        </div>
-                    </a>
-                    <a class="col-md-3 pointer-event" asp-controller="Department" asp-action="Index">
-                        <div class="card-counter success">
-                            <i class="fa fa-home"></i>
-                            <span class="count-numbers">@ViewData["DepartmentsCount"]</span>
-                            <span class="count-name">Departments</span>
-                        </div>
-                    </a>
-                    <a class="col-md-3 pointer-event" asp-controller="Roles" asp-action="Index">
-                        <div class="card-counter info">
-                            <i class="fa fa-database"></i>
-                            <span class="count-numbers">@ViewData["RolesCount"]</span>
-                            <span class="count-name">Roles</span>
-                        </div>
-                    </a>
-                </div>
-                }
-    else
-    {
-        <div class="jumbotron jumbotron-fluid" style="margin-bottom: 0;
-        background-color: #b2cbf4;
-        text-align: left">
-            <div class="container">
-                <h1 class="display-4">Welcome - @AccountService.Username</h1>
-                <p class="lead">Have a nice work experience!</p>
-            </div>
         </div>
-    }
+        <div class="row">
+            <a class="col-md-3 pointer-event" asp-controller="Employees" asp-action="All">
+                <div class="card-counter danger">
+                    <i class="fa fa-user"></i>
+                    <span class="count-numbers">@ViewData["EmployeesCount"]</span>
+                    <span class="count-name">Employees</span>
+                </div>
+            </a>
+            <a class="col-md-3 pointer-event" asp-controller="Department" asp-action="Index">
+                <div class="card-counter success">
+                    <i class="fa fa-home"></i>
+                    <span class="count-numbers">@ViewData["DepartmentsCount"]</span>
+                    <span class="count-name">Departments</span>
+                </div>
+            </a>
+            <a class="col-md-3 pointer-event" asp-controller="Roles" asp-action="Index">
+                <div class="card-counter info">
+                    <i class="fa fa-database"></i>
+                    <span class="count-numbers">@ViewData["RolesCount"]</span>
+                    <span class="count-name">Roles</span>
+                </div>
+            </a>
+        </div>
+    } 
 }

@@ -39,7 +39,7 @@ namespace App.Controllers
         {
             if(AccountService.Role!="Admin")
             {
-                ViewBag.ErrorTitle = "Only admin can add employee in system! ";
+                ViewBag.ErrorTitle = "Only admin can add role in system! ";
                 ViewBag.ErrorMessage = $"{AccountService.Username} can't access this page!";
                 return View("NotFoundPage");
             }

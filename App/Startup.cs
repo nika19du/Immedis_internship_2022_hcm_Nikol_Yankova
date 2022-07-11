@@ -1,3 +1,4 @@
+using App.Controllers;
 using App.Helper;
 using CloudinaryDotNet;
 using Data;
@@ -33,7 +34,7 @@ namespace App
             services.AddDbContext<Context>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<AppAPI>();
-            services.AddScoped<IEmployeeService,EmployeeService>();
+            services.AddScoped<IEmployeeService,EmployeeService>(); 
             services.AddTransient<ICloudinaryService, CloudinaryService>();
 
             var config = new AutoMapper.MapperConfiguration(x =>

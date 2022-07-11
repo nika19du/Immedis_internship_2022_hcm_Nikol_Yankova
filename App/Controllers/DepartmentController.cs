@@ -1,5 +1,6 @@
 ﻿using App.Helper;
 using Data.Models;
+using HCMA.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -36,6 +37,12 @@ namespace App.Controllers
         }
         public IActionResult Create()
         {
+            if (AccountService.Role != "Admin" || AccountService.Role!= "Supervisor")
+            {
+                ViewBag.ErrorTitle = "Only admin and supervisor can add department in system! ";
+                ViewBag.ErrorMessage = $"{AccountService.Username} can't access this page!";
+                return View("NotFoundPage");
+            }
             return View();
         }
         [HttpPost]
