@@ -17,6 +17,7 @@ namespace HCMA.InputModels.Employees
         [Required]
         public string LastName { get; set; }
         [Required]
+        [MinLength(10)]
         public string Phone { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]

@@ -3,9 +3,11 @@
 @{
     ViewData["Title"] = "Create";
 }
-<h1 class="bg-primary text-white font-weight-bold text-center p-3 w-60 mx-auto rounded" style="color:#69D2E7;">Create Employee</h1>
-<hr />
- 
+<h1 class="bg-primary text-white font-weight-bold text-center p-3 w-60 mx-auto rounded createEmpBanner">Create Employee</h1>
+<span class="field-validation-error">
+    @Html.ValidationMessage("Error")
+</span>
+<hr /> 
     <div class="col-lg-12">
         <div class="job-detail mt-2 p-4"> 
             <div class="custom-form">
@@ -23,14 +25,14 @@
                             <label asp-for="LastName" class=" text-primary"></label>
                             <input asp-for="LastName" class="form-control" />
                             <span asp-validation-for="LastName" class="text-danger"></span>
-                        </div> 
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group app-label">
                                 <label for="General" class="text-primary">Gender</label>
                                 <div class="form-button">
                                     <select asp-for="GenderType" asp-items="Html.GetEnumSelectList<Gender>()" class="form-control">
                                         <option selected="selected" value="">Please select</option>
-                                    </select> 
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -110,13 +112,12 @@
                         </div>
                         <div class="form-group d-flex justify-content-center col-12">
                             <input type="submit" value="Create" class="btn btn-primary form-control center" />
-                        </div>
+                        </div> 
                     </div>
                 </form>
             </div>
         </div>
-    </div> 
- 
+    </div>  
 <div>
     <a asp-action="All">Back to List</a>
 </div>

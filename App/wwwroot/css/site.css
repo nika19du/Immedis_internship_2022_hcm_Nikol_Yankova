@@ -238,7 +238,16 @@ tr:nth-child(even) {
         display: block;
         font-size: 18px;
     }
-
+.home-jumbotron {
+    width: 105% !important;
+    background-color: azure
+}
+.createEmpBanner {
+    color: #69D2E7;
+}
+.field-validation-error{
+    color:red;
+}
 .team-single-icons ul li {
     display: inline-block;
     border: 1px solid #02c2c7;

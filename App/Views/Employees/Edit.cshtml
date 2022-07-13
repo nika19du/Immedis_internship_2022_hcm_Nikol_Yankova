@@ -19,7 +19,7 @@
 <div class="col">
     <div class="row">
         <div class="col mb-5">
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-body">
                     <div class="e-profile">
                         <form class="form" asp-action="Edit" method="post" enctype="multipart/form-data">
@@ -190,7 +190,7 @@
                                                 <div class="col">
                                                     <div class="custom-controls-stacked mt-2">
                                                         <div class="custom-control">
-                                                                <label asp-for="DateOfBirth" class="control-label"></label>
+                                                            <label asp-for="DateOfBirth" class="control-label"></label>
                                                             <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                                                                 <input id="ReleaseDateId" type="text"
                                                                        asp-for="DateOfBirth"
@@ -221,6 +221,9 @@
                                                 <button class="btn btn-primary" value="Save" type="submit">Save Changes</button>
                                             </div>
                                         </div>
+                                        <div class="col-12 mt-3">
+                                            <a asp-action="All">Back to List</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -229,10 +232,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div>
-        <a asp-action="All">Back to List</a>
-    </div>
+    </div> 
 </div>
 
 @section Scripts {

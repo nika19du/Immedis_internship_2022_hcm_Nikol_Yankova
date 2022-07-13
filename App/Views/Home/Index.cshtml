@@ -5,21 +5,17 @@
 }
 
 @if (AccountService.UsrId == null)
-{
-    <br />
-    <br />
-
-    <div class="jumbotron bg-eventures mx-auto" style="width:105%!important;background-color:azure">
+{ 
+    <br /> 
+    <div class="jumbotron bg-eventures mx-auto home-jumbotron">
         <h1>HCMA - HUMAN CAPITAL MANAGEMENT APP🌐 System.</h1>
         <hr class="hr-2 bg-white" />
         <h3 class="mt-4"><a href="/Employees/Login">Login</a> to start.</h3>
     </div>
 }
 else
-{
-    <br />
-    <br />
-
+{ 
+    <br /> 
     @if (AccountService.Role == "Admin" || AccountService.Role=="Supervisor")
     {
         <div class="jumbotron jumbotron-fluid">
