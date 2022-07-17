@@ -57,9 +57,9 @@ namespace HCMA.Services.Employees
         public int EditAsync(EmployeeServiceModel employeeServiceModel,int id)
         {
             var e =  context.Employees.SingleOrDefault(x => x.Id == id);
-            var oldImg = e.Image; 
-
+            var oldImg = e.Image;
             e=mapper.Map<EmployeeServiceModel, Employee>(employeeServiceModel); 
+            e.Gender = employeeServiceModel.GenderType;
             if (e.Image == null)
                 e.Image = oldImg;
             context.ChangeTracker.Clear();

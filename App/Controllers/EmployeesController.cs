@@ -170,8 +170,7 @@ namespace App.Controllers
                 ViewData["Department"] = new SelectList(context.Departments, "Id", "Name", model.DepartmentId);
                 ViewData["Role"] = new SelectList(context.Roles, "Id", "Name", model.DepartmentId);
                 return this.View(model);
-            }
-            var employee = await context.Employees.FindAsync(model.Id);
+            } ;
             string picUrl = null;
             if (model.Image != null)
             {
@@ -179,6 +178,7 @@ namespace App.Controllers
             }
 
             var employeeServiceModel = mapper.Map<EmployeesEditInputModel, EmployeeServiceModel>(model);
+            employeeServiceModel.GenderType = model.GenderType;
             if (picUrl != null)
                 employeeServiceModel.Image = picUrl;
             employeeService.EditAsync(employeeServiceModel, model.Id);
