@@ -23,10 +23,10 @@ namespace App.Controllers
         private AppAPI api;
 
         private HttpClient client;
-       
+
         public async Task<IActionResult> Index()
         {
-            List<Department> departments = new List<Department>(); 
+            List<Department> departments = new List<Department>();
             HttpResponseMessage res = await client.GetAsync("api/departments");
             if (res.IsSuccessStatusCode)
             {
@@ -37,17 +37,21 @@ namespace App.Controllers
         }
         public IActionResult Create()
         {
-            if (AccountService.Role != "Admin" || AccountService.Role!= "Supervisor")
+            if (AccountService.Role == "Admin" || AccountService.Role == "Supervisor")
+            {
+                return View(); 
+            }
+            else
             {
                 ViewBag.ErrorTitle = "Only admin and supervisor can add department in system! ";
                 ViewBag.ErrorMessage = $"{AccountService.Username} can't access this page!";
                 return View("NotFoundPage");
             }
-            return View();
+
         }
         [HttpPost]
         public async Task<IActionResult> Create(Department department)
-        { 
+        {
             if (string.IsNullOrWhiteSpace(department.Name))
             {
                 ModelState.AddModelError(nameof(department.Name), "Fill the field!");
@@ -62,10 +66,10 @@ namespace App.Controllers
             ModelState.AddModelError(string.Empty, "Server Error. Please contact administrator.");
 
             return View(department);
-        } 
+        }
 
         public async Task<IActionResult> Edit(int id)
-        { 
+        {
             HttpResponseMessage res = await client.GetAsync($"api/departments/{id}");
             var result = res.Content.ReadAsStringAsync().Result;
             var d = JsonConvert.DeserializeObject<Department>(result);
@@ -78,8 +82,8 @@ namespace App.Controllers
             {
                 ModelState.AddModelError(nameof(department.Name), "Fill the field!");
                 return View(department);
-            } 
-            var res = await client.PutAsJsonAsync($"/api/departments/{department.Id}",department);
+            }
+            var res = await client.PutAsJsonAsync($"/api/departments/{department.Id}", department);
 
             if (res.IsSuccessStatusCode)
             {
