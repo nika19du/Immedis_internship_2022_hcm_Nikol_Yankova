@@ -1,4 +1,5 @@
 using App.Controllers;
+using App.Controllers.Validation;
 using App.Helper;
 using CloudinaryDotNet;
 using Data;
@@ -36,6 +37,7 @@ namespace App
             services.AddTransient<AppAPI>();
             services.AddScoped<IEmployeeService,EmployeeService>(); 
             services.AddTransient<ICloudinaryService, CloudinaryService>();
+            services.AddScoped<Validate>();
 
             var config = new AutoMapper.MapperConfiguration(x =>
               {

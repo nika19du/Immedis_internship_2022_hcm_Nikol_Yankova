@@ -56,20 +56,13 @@ namespace HCMA.Services.Employees
         } 
         public int EditAsync(EmployeeServiceModel employeeServiceModel,int id)
         {
-            var e = context.Employees.FirstOrDefault(x => x.Id == id);
-            e.Username = employeeServiceModel.Username;
-            if (employeeServiceModel.Image != null)
-                e.Image = employeeServiceModel.Image;
-            e.FirstName = employeeServiceModel.FirstName;
-            e.LastName = employeeServiceModel.LastName;
-            e.Address = employeeServiceModel.Address;
-            e.Phone = employeeServiceModel.Phone;
-            e.Password = employeeServiceModel.Password;
-            e.Email = employeeServiceModel.Email;
-            e.DateOfBirth = employeeServiceModel.DateOfBirth;
-            e.DepartmentId = employeeServiceModel.DepartmentId;
-            e.RoleId = employeeServiceModel.RoleId;
-            e.Gender = employeeServiceModel.GenderType;
+            var e =  context.Employees.SingleOrDefault(x => x.Id == id);
+            var oldImg = e.Image; 
+
+            e=mapper.Map<EmployeeServiceModel, Employee>(employeeServiceModel); 
+            if (e.Image == null)
+                e.Image = oldImg;
+            context.ChangeTracker.Clear();
             context.Employees.Update(e);
             context.SaveChanges();
 
